@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Money Kingdom</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div>
+      <h1>👑 MONEY KINGDOM</h1>
+      <p>Sweeter Habits • Brighter Futures</p>
+    </div>
+
+    <div class="currencies">
+      <span>💰 <b id="coins">2500</b></span>
+      <span>💎 <b id="gems">50</b></span>
+      <span>⭐ <b id="xp">0</b></span>
+    </div>
+  </header>
+
+  <!-- PLAYER LEVEL -->
+  <section class="player-bar">
+    <span>Kingdom Lv. <b id="level">1</b></span>
+
+    <div class="xp-bar">
+      <div id="xpFill"></div>
+    </div>
+
+    <span id="xpText">0 / 100 XP</span>
+  </section>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- KINGDOM -->
+    <section id="kingdom" class="screen active-screen">
+
+      <h2>🏰 Your Kingdom</h2>
+
+      <div class="kingdom-map">
+
+        <div class="building bank">
+          🏦
+          <h3>Golden Bank</h3>
+          <p>Lv. <span id="bankLevel">1</span></p>
+          <button onclick="upgradeBuilding('bank')">
+            Upgrade
+          </button>
+        </div>
+
+        <div class="building market">
+          🏪
+          <h3>Market</h3>
+          <p>Lv. <span id="marketLevel">1</span></p>
+          <button onclick="upgradeBuilding('market')">
+            Upgrade
+          </button>
+        </div>
+
+        <div class="building investment">
+          📈
+          <h3>Investment Hall</h3>
+          <p>Lv. <span id="investmentLevel">1</span></p>
+          <button onclick="upgradeBuilding('investment')">
+            Upgrade
+          </button>
+        </div>
+
+        <div class="building academy">
+          📚
+          <h3>Money Academy</h3>
+          <p>Lv. <span id="academyLevel">1</span></p>
+          <button onclick="upgradeBuilding('academy')">
+            Upgrade
+          </button>
+        </div>
+
+      </div>
+
+      <div class="income-card">
+        <h3>💰 Kingdom Income</h3>
+        <p>
+          Your kingdom earns
+          <strong>$<span id="income">10</span></strong>
+          every few seconds.
+        </p>
+
+        <button onclick="collectIncome()">
+          Collect Income
+        </button>
+      </div>
+
+    </section>
+
+
+
+    <!-- BATTLE -->
+    <section id="battle" class="screen">
+
+      <h2>⚔️ Adventure</h2>
+
+      <div class="stage-card">
+
+        <h3>
+          Stage <span id="stage">1</span>
+        </h3>
+
+        <p id="enemyName">
+          Impulse Shopping Goblin
+        </p>
+
+        <div class="battle-area">
+
+          <div class="hero-fighter">
+            💵
+            <span>Dollar Cookie</span>
+          </div>
+
+          <div class="vs">VS</div>
+
+          <div class="enemy-fighter" id="enemySprite">
+            👹
+            <span id="enemyLabel">
+              Shopping Goblin
+            </span>
+          </div>
+
+        </div>
+
+        <div class="health-bar">
+          <div id="enemyHealth"></div>
+        </div>
+
+        <p id="battleMessage">
+          Ready for battle!
+        </p>
+
+        <button class="battle-btn" onclick="fight()">
+          ⚔️ FIGHT
+        </button>
+
+      </div>
+
+      <div class="reward-preview">
+        <h3>Possible Rewards</h3>
+
+        <span>💰 Coins</span>
+        <span>⭐ XP</span>
+        <span>🎁 Chests</span>
+        <span>🧩 Hero Shards</span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- HEROES -->
+    <section id="heroes" class="screen">
+
+      <h2>🍪 Cookie Collection</h2>
+
+      <div class="filters">
+        <button onclick="filterHeroes('ALL')">All</button>
+        <button onclick="filterHeroes('COMMON')">Common</button>
+        <button onclick="filterHeroes('EPIC')">Epic</button>
+        <button onclick="filterHeroes('LEGENDARY')">Legendary</button>
+        <button onclick="filterHeroes('ANCIENT')">Ancient</button>
+        <button onclick="filterHeroes('BEAST')">Beast</button>
+      </div>
+
+      <div id="heroGrid" class="hero-grid"></div>
+
+    </section>
+
+
+
+    <!-- SKILL TREE -->
+    <section id="skills" class="screen">
+
+      <h2>🌳 Skill Tree</h2>
+
+      <div class="skill-info">
+        Skill Points:
+        <strong id="skillPoints">5</strong>
+      </div>
+
+      <div class="skill-tree">
+
+        <div
+          class="skill-node power"
+          onclick="upgradeSkill('power')"
+        >
+          ⚔️
+          <strong>Power</strong>
+          <small>Lv. <span id="powerSkill">0</span></small>
+        </div>
+
+
+        <div
+          class="skill-node luck"
+          onclick="upgradeSkill('luck')"
+        >
+          🍀
+          <strong>Luck</strong>
+          <small>Lv. <span id="luckSkill">0</span></small>
+        </div>
+
+
+        <div
+          class="skill-node wealth"
+          onclick="upgradeSkill('wealth')"
+        >
+          💰
+          <strong>Wealth</strong>
+          <small>Lv. <span id="wealthSkill">0</span></small>
+        </div>
+
+
+        <div
+          class="skill-node speed"
+          onclick="upgradeSkill('speed')"
+        >
+          ⚡
+          <strong>Speed</strong>
+          <small>Lv. <span id="speedSkill">0</span></small>
+        </div>
+
+
+        <div
+          class="skill-node defence"
+          onclick="upgradeSkill('defence')"
+        >
+          🛡️
+          <strong>Defence</strong>
+          <small>Lv. <span id="defenceSkill">0</span></small>
+        </div>
+
+
+        <div
+          class="skill-node wisdom"
+          onclick="upgradeSkill('wisdom')"
+        >
+          🧠
+          <strong>Wisdom</strong>
+          <small>Lv. <span id="wisdomSkill">0</span></small>
+        </div>
+
+      </div>
+
+      <div class="skill-description">
+        <h3>Build your own play style</h3>
+
+        <p>
+          ⚔️ Power increases battle damage.
+        </p>
+
+        <p>
+          🍀 Luck increases rare rewards.
+        </p>
+
+        <p>
+          💰 Wealth increases kingdom income.
+        </p>
+
+        <p>
+          ⚡ Speed increases attack efficiency.
+        </p>
+
+        <p>
+          🛡️ Defence reduces battle damage.
+        </p>
+
+        <p>
+          🧠 Wisdom gives bonus XP.
+        </p>
+      </div>
+
+    </section>
+
+
+
+    <!-- STORY -->
+    <section id="story" class="screen">
+
+      <h2>📖 Story</h2>
+
+      <div class="story-box">
+
+        <h3>
+          Chapter 1
+        </h3>
+
+        <h2>
+          The Shattered Kingdom
+        </h2>
+
+        <p>
+          Long ago, Prospera was protected by the
+          legendary Tree of Fortune.
+        </p>
+
+        <p>
+          But one day, the tree shattered.
+        </p>
+
+        <p>
+          Its seven Golden Seeds disappeared across
+          the world.
+        </p>
+
+        <p>
+          Without them, Debt, Greed, Deception and
+          Ruin spread across the kingdom.
+        </p>
+
+        <p>
+          Now you must rebuild Prospera, gather the
+          Cookies and recover the Golden Seeds.
+        </p>
+
+        <blockquote>
+          “True wealth is not how much you own.
+          It is what you can build with it.”
+        </blockquote>
+
+      </div>
+
+      <div class="chapter-list">
+
+        <div class="chapter unlocked">
+          🌱 Chapter 1
+          <span>Empty Village</span>
+        </div>
+
+        <div class="chapter">
+          🏜️ Chapter 2
+          <span>Debt Desert 🔒</span>
+        </div>
+
+        <div class="chapter">
+          🌲 Chapter 3
+          <span>Budget Forest 🔒</span>
+        </div>
+
+        <div class="chapter">
+          🌊 Chapter 4
+          <span>Risky Seas 🔒</span>
+        </div>
+
+        <div class="chapter">
+          📈 Chapter 5
+          <span>Investment City 🔒</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- REWARD POPUP -->
+  <div id="rewardPopup" class="popup hidden">
+
+    <div class="popup-card">
+
+      <h1>🎁 REWARD!</h1>
+
+      <div id="rewardText"></div>
+
+      <button onclick="closeReward()">
+        COLLECT
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- BOTTOM NAV -->
+  <nav>
+
+    <button onclick="showScreen('kingdom')">
+      🏰
+      <span>Kingdom</span>
+    </button>
+
+    <button onclick="showScreen('battle')">
+      ⚔️
+      <span>Battle</span>
+    </button>
+
+    <button onclick="showScreen('heroes')">
+      🍪
+      <span>Cookies</span>
+    </button>
+
+    <button onclick="showScreen('skills')">
+      🌳
+      <span>Skills</span>
+    </button>
+
+    <button onclick="showScreen('story')">
+      📖
+      <span>Story</span>
+    </button>
+
+  </nav>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
