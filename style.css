@@ -1,0 +1,890 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    "Trebuchet MS",
+    Arial,
+    sans-serif;
+
+  background:
+    linear-gradient(
+      #16213e,
+      #0f172a
+    );
+
+  color: white;
+
+  min-height: 100vh;
+  padding-bottom: 90px;
+}
+
+
+/* TOP BAR */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5b3218,
+      #9a6428
+    );
+
+  padding: 15px 30px;
+
+  border-bottom:
+    4px solid #ffd76b;
+}
+
+.topbar h1 {
+  margin: 0;
+  color: #ffe69c;
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+
+.currencies {
+  display: flex;
+  gap: 15px;
+}
+
+.currencies span {
+  background: #182235;
+
+  border-radius: 20px;
+
+  padding:
+    8px 14px;
+
+  border:
+    2px solid #ffd76b;
+}
+
+
+/* PLAYER LEVEL */
+
+.player-bar {
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #111827;
+
+  padding:
+    9px 20px;
+}
+
+.xp-bar {
+
+  height: 12px;
+
+  flex: 1;
+
+  background: #374151;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+#xpFill {
+
+  height: 100%;
+
+  width: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #4ade80,
+      #bef264
+    );
+}
+
+
+/* SCREENS */
+
+main {
+  max-width: 1200px;
+
+  margin: auto;
+
+  padding: 25px;
+}
+
+.screen {
+  display: none;
+}
+
+.active-screen {
+  display: block;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+
+/* KINGDOM */
+
+.kingdom-map {
+
+  min-height: 520px;
+
+  border-radius: 25px;
+
+  padding: 40px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 30px;
+
+  background:
+    linear-gradient(
+      rgba(28, 110, 74, .8),
+      rgba(20, 80, 50, .85)
+    );
+
+  border:
+    5px solid #eac66b;
+}
+
+.building {
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .93
+    );
+
+  color: #222;
+
+  text-align: center;
+
+  border-radius: 25px;
+
+  padding: 25px;
+
+  font-size: 55px;
+
+  box-shadow:
+    0 10px 20px
+    rgba(0,0,0,.25);
+
+  transition: .2s;
+}
+
+.building:hover {
+  transform:
+    translateY(-5px)
+    scale(1.02);
+}
+
+.building h3 {
+  font-size: 20px;
+}
+
+button {
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      #ffd45e,
+      #e99e20
+    );
+
+  padding:
+    10px 18px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+button:hover {
+
+  transform:
+    scale(1.05);
+}
+
+.income-card {
+
+  margin-top: 20px;
+
+  background: #29364e;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  text-align: center;
+}
+
+
+/* BATTLE */
+
+.stage-card {
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      #25365c,
+      #151d32
+    );
+
+  padding: 30px;
+
+  border-radius: 25px;
+
+  border:
+    3px solid #9cc9ff;
+}
+
+.battle-area {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 80px;
+
+  margin:
+    30px 0;
+}
+
+.hero-fighter,
+.enemy-fighter {
+
+  font-size: 95px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.hero-fighter span,
+.enemy-fighter span {
+
+  font-size: 16px;
+
+  font-weight: bold;
+}
+
+.vs {
+
+  color: #ffd75a;
+
+  font-size: 28px;
+
+  font-weight: bold;
+}
+
+.health-bar {
+
+  width: 80%;
+
+  max-width: 500px;
+
+  height: 20px;
+
+  background: #541b25;
+
+  margin:
+    20px auto;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+#enemyHealth {
+
+  height: 100%;
+
+  width: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff335e,
+      #ff8a5c
+    );
+
+  transition: .4s;
+}
+
+.battle-btn {
+
+  font-size: 20px;
+
+  padding:
+    15px 40px;
+
+  background:
+    linear-gradient(
+      #ffde55,
+      #ff7c27
+    );
+}
+
+.reward-preview {
+
+  margin-top: 20px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  justify-content: center;
+}
+
+.reward-preview span {
+
+  background: #28364c;
+
+  padding:
+    10px 20px;
+
+  border-radius: 15px;
+}
+
+
+/* HEROES */
+
+.filters {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 20px;
+}
+
+.hero-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(180px,1fr)
+    );
+
+  gap: 18px;
+}
+
+.hero-card {
+
+  background: #27334a;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  padding-bottom: 15px;
+
+  border:
+    3px solid #555;
+
+  transition: .2s;
+}
+
+.hero-card:hover {
+
+  transform:
+    translateY(-6px);
+}
+
+.hero-image {
+
+  font-size: 70px;
+
+  padding: 30px;
+
+  background: #35435c;
+}
+
+.hero-card h3 {
+
+  margin:
+    12px 0 3px;
+}
+
+.rarity {
+
+  display: inline-block;
+
+  padding:
+    5px 10px;
+
+  border-radius: 12px;
+
+  font-size: 11px;
+
+  font-weight: bold;
+}
+
+
+/* RARITIES */
+
+.COMMON {
+  border-color: #b68b66;
+}
+
+.COMMON .rarity {
+  background: #9c795f;
+}
+
+
+.RARE {
+  border-color: #4ec3ff;
+}
+
+.RARE .rarity {
+  background: #2f9aca;
+}
+
+
+.EPIC {
+  border-color: #ff6fde;
+}
+
+.EPIC .rarity {
+  background: #bd45a7;
+}
+
+
+.LEGENDARY {
+
+  border-color: #ffd74b;
+
+  box-shadow:
+    0 0 15px
+    rgba(255,218,82,.4);
+}
+
+.LEGENDARY .rarity {
+
+  background: #e5a91d;
+
+  color: #111;
+}
+
+
+.ANCIENT {
+
+  border-color: #7669ff;
+
+  box-shadow:
+    0 0 18px
+    rgba(117,105,255,.55);
+}
+
+.ANCIENT .rarity {
+
+  background: #5544d8;
+}
+
+
+.BEAST {
+
+  border-color: #ff273f;
+
+  background:
+    linear-gradient(
+      #2b1017,
+      #16080d
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(255,20,60,.45);
+}
+
+.BEAST .rarity {
+
+  background: #ac172c;
+}
+
+
+/* SKILL TREE */
+
+.skill-info {
+
+  padding: 12px;
+
+  background: #253047;
+
+  border-radius: 15px;
+
+  margin-bottom: 30px;
+}
+
+.skill-tree {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      150px
+    );
+
+  justify-content: center;
+
+  gap: 45px;
+
+  padding: 40px;
+
+  background:
+    #151d2e;
+
+  border-radius: 25px;
+}
+
+.skill-node {
+
+  width: 140px;
+
+  height: 125px;
+
+  clip-path:
+    polygon(
+      25% 6%,
+      75% 6%,
+      100% 50%,
+      75% 94%,
+      25% 94%,
+      0 50%
+    );
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 30px;
+
+  cursor: pointer;
+
+  transition: .2s;
+
+  border: none;
+}
+
+.skill-node strong {
+
+  font-size: 15px;
+}
+
+.skill-node small {
+
+  font-size: 11px;
+}
+
+.skill-node:hover {
+
+  transform:
+    scale(1.1);
+}
+
+.power {
+  background: #d54c45;
+}
+
+.luck {
+  background: #9c4ccc;
+}
+
+.wealth {
+  background: #34a853;
+}
+
+.speed {
+  background: #d4a82c;
+}
+
+.defence {
+  background: #3f86df;
+}
+
+.wisdom {
+  background: #30b8c5;
+}
+
+.skill-description {
+
+  margin-top: 30px;
+
+  padding: 20px;
+
+  background: #253047;
+
+  border-radius: 20px;
+}
+
+
+/* STORY */
+
+.story-box {
+
+  background:
+    linear-gradient(
+      #352a56,
+      #211c39
+    );
+
+  border-radius: 25px;
+
+  padding: 35px;
+
+  line-height: 1.7;
+
+  border:
+    3px solid #d8b963;
+}
+
+blockquote {
+
+  color: #ffe395;
+
+  font-size: 20px;
+
+  margin:
+    30px 0 0;
+
+  font-style: italic;
+}
+
+.chapter-list {
+
+  margin-top: 20px;
+
+  display: grid;
+
+  gap: 10px;
+}
+
+.chapter {
+
+  background: #27334b;
+
+  padding: 15px;
+
+  border-radius: 12px;
+
+  opacity: .55;
+
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.chapter.unlocked {
+
+  opacity: 1;
+
+  border:
+    2px solid #ffd75d;
+}
+
+
+/* NAVIGATION */
+
+nav {
+
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 75px;
+
+  background: #101827;
+
+  display: flex;
+
+  justify-content: center;
+
+  border-top:
+    3px solid #dfb855;
+
+  z-index: 10;
+}
+
+nav button {
+
+  background: transparent;
+
+  color: white;
+
+  border-radius: 0;
+
+  min-width: 100px;
+
+  font-size: 23px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 3px;
+}
+
+nav button span {
+
+  font-size: 11px;
+}
+
+
+/* POPUP */
+
+.popup {
+
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background:
+    rgba(0,0,0,.78);
+
+  z-index: 100;
+}
+
+.hidden {
+  display: none;
+}
+
+.popup-card {
+
+  background:
+    linear-gradient(
+      #fff7d8,
+      #edc76a
+    );
+
+  color: #222;
+
+  text-align: center;
+
+  width: 350px;
+
+  max-width: 90%;
+
+  border-radius: 30px;
+
+  padding: 35px;
+
+  border:
+    6px solid white;
+
+  box-shadow:
+    0 0 60px
+    rgba(255,215,70,.7);
+
+  animation:
+    pop .4s ease;
+}
+
+@keyframes pop {
+
+  from {
+    transform: scale(.4);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+  .topbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .kingdom-map {
+    grid-template-columns: 1fr;
+  }
+
+  .battle-area {
+    gap: 20px;
+  }
+
+  .hero-fighter,
+  .enemy-fighter {
+    font-size: 65px;
+  }
+
+  .skill-tree {
+
+    grid-template-columns:
+      repeat(2,120px);
+
+    gap: 25px;
+  }
+
+  .skill-node {
+
+    width: 120px;
+    height: 110px;
+  }
+
+  nav button {
+
+    min-width: 0;
+
+    flex: 1;
+  }
+}
