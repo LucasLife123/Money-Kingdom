@@ -3,419 +3,1512 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#061426" />
   <title>Money Kingdom</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style.css?v=18000" />
 </head>
-
 <body>
+  <div id="app">
+    <main id="gameFrame" class="game-frame" aria-label="Money Kingdom game">
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div>
-      <h1>👑 MONEY KINGDOM</h1>
-      <p>Sweeter Habits • Brighter Futures</p>
-    </div>
+      <!-- =====================================================
+           KINGDOM SCREEN
+      ====================================================== -->
+      <section id="kingdomScreen" class="screen active" aria-label="Prospera Kingdom">
+        <img
+          id="kingdomImage"
+          class="screen-art"
+          src="./kingdom-screen.png"
+          alt="Prospera Kingdom"
+          draggable="false"
+        />
 
-    <div class="currencies">
-      <span>💰 <b id="coins">2500</b></span>
-      <span>💎 <b id="gems">50</b></span>
-      <span>⭐ <b id="xp">0</b></span>
-    </div>
-  </header>
-
-  <!-- PLAYER LEVEL -->
-  <section class="player-bar">
-    <span>Kingdom Lv. <b id="level">1</b></span>
-
-    <div class="xp-bar">
-      <div id="xpFill"></div>
-    </div>
-
-    <span id="xpText">0 / 100 XP</span>
-  </section>
-
-  <!-- MAIN -->
-  <main>
-
-    <!-- KINGDOM -->
-    <section id="kingdom" class="screen active-screen">
-
-      <h2>🏰 Your Kingdom</h2>
-
-      <div class="kingdom-map">
-
-        <div class="building bank">
-          🏦
-          <h3>Golden Bank</h3>
-          <p>Lv. <span id="bankLevel">1</span></p>
-          <button onclick="upgradeBuilding('bank')">
-            Upgrade
-          </button>
+        <div id="kingdomImageError" class="image-error" hidden>
+          <div class="image-error-card">
+            <strong>Kingdom artwork not found</strong>
+            <span>Put kingdom-screen.png in the same folder as index.html.</span>
+          </div>
         </div>
 
-        <div class="building market">
-          🏪
-          <h3>Market</h3>
-          <p>Lv. <span id="marketLevel">1</span></p>
-          <button onclick="upgradeBuilding('market')">
-            Upgrade
-          </button>
+        <div class="kingdom-vignette" aria-hidden="true"></div>
+        <div id="kingdomTimeTint" class="kingdom-time-tint morning" aria-hidden="true"></div>
+        <div class="kingdom-sun-glow" aria-hidden="true"></div>
+        <div class="kingdom-water-glow" aria-hidden="true"></div>
+        <div id="sparkLayer" class="spark-layer" aria-hidden="true"></div>
+        <div id="ambientCloudLayer" class="ambient-cloud-layer" aria-hidden="true"></div>
+
+        <!-- visible game status overlay -->
+        <div class="kingdom-status-strip">
+          <div class="kingdom-status-item">
+            <span>Prospera</span>
+            <strong id="phaseText">Morning</strong>
+          </div>
+          <div class="kingdom-status-divider"></div>
+          <div class="kingdom-status-item">
+            <span>Residents</span>
+            <strong id="residentText">12 / 16</strong>
+          </div>
+          <div class="kingdom-status-divider"></div>
+          <div class="kingdom-status-item">
+            <span>Castle</span>
+            <strong id="castleLevelText">Lv. 3</strong>
+          </div>
         </div>
 
-        <div class="building investment">
-          📈
-          <h3>Investment Hall</h3>
-          <p>Lv. <span id="investmentLevel">1</span></p>
-          <button onclick="upgradeBuilding('investment')">
-            Upgrade
-          </button>
+        <!-- clickable regions aligned to the supplied artwork -->
+        <button class="hotspot hs-events" data-action="events" aria-label="Events"></button>
+        <button class="hotspot hs-quests" data-action="quests" aria-label="Quests"></button>
+        <button class="hotspot hs-shop" data-action="shop" aria-label="Shop"></button>
+        <button class="hotspot hs-build" data-action="build" aria-label="Build"></button>
+        <button class="hotspot hs-kingdom" data-screen="kingdomScreen" aria-label="Kingdom"></button>
+        <button class="hotspot hs-cookies" data-screen="cookiesScreen" aria-label="Cookies"></button>
+        <button class="hotspot hs-adventure" data-screen="adventureScreen" aria-label="Adventure"></button>
+        <button class="hotspot hs-summon" data-screen="summonScreen" aria-label="Summon"></button>
+        <button class="hotspot hs-inventory" data-action="inventory" aria-label="Inventory"></button>
+        <button class="hotspot hs-to-adventure" data-screen="adventureScreen" aria-label="To Adventure"></button>
+        <button class="hotspot hs-mail" data-action="mail" aria-label="Mail"></button>
+        <button class="hotspot hs-settings" data-action="settings" aria-label="Settings"></button>
+      </section>
+
+      <!-- =====================================================
+           COOKIE COLLECTION
+      ====================================================== -->
+      <section id="cookiesScreen" class="screen" aria-label="Cookie Collection">
+        <img
+          id="cookiesImage"
+          class="screen-art"
+          src="./cookies-screen.png"
+          alt="Money Kingdom Cookie Collection"
+          draggable="false"
+        />
+
+        <div id="cookiesImageError" class="image-error" hidden>
+          <div class="image-error-card">
+            <strong>Cookie artwork not found</strong>
+            <span>Put cookies-screen.png in the same folder as index.html.</span>
+          </div>
         </div>
 
-        <div class="building academy">
-          📚
-          <h3>Money Academy</h3>
-          <p>Lv. <span id="academyLevel">1</span></p>
-          <button onclick="upgradeBuilding('academy')">
-            Upgrade
-          </button>
+        <div class="cookie-screen-vignette" aria-hidden="true"></div>
+        <div class="cookie-screen-glow" aria-hidden="true"></div>
+
+        <button class="hotspot ck-back" data-screen="kingdomScreen" aria-label="Back to Kingdom"></button>
+
+        <button class="cookie-hotspot" data-cookie="Lucky Cookie" data-rarity="LEGENDARY" data-level="60" style="--x:10.4%;--y:24.5%;--w:14.5%;--h:35.2%" aria-label="Lucky Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Coin Cookie" data-rarity="RARE" data-level="50" style="--x:25.2%;--y:24.5%;--w:14.3%;--h:35.2%" aria-label="Coin Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Dollar Cookie" data-rarity="EPIC" data-level="50" style="--x:40.0%;--y:24.5%;--w:14.2%;--h:35.2%" aria-label="Dollar Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Property Cookie" data-rarity="EPIC" data-level="40" style="--x:54.8%;--y:24.5%;--w:14.3%;--h:35.2%" aria-label="Property Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Violin Cookie" data-rarity="EPIC" data-level="40" style="--x:10.4%;--y:61.2%;--w:14.5%;--h:33.5%" aria-label="Violin Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Banker Cookie" data-rarity="EPIC" data-level="30" style="--x:25.2%;--y:61.2%;--w:14.3%;--h:33.5%" aria-label="Banker Cookie"></button>
+        <button class="cookie-hotspot" data-cookie="Builder Cookie" data-rarity="RARE" data-level="20" style="--x:40.0%;--y:61.2%;--w:14.2%;--h:33.5%" aria-label="Builder Cookie"></button>
+
+        <aside id="cookieInfoCard" class="cookie-info-card" aria-live="polite">
+          <span id="cookieRarityLabel" class="cookie-rarity-label">LEGENDARY</span>
+          <strong id="cookieNameLabel">Lucky Cookie</strong>
+          <div class="cookie-info-line">
+            <span>Level</span>
+            <b id="cookieLevelLabel">60</b>
+          </div>
+          <div class="cookie-info-line">
+            <span>Role</span>
+            <b id="cookieRoleLabel">Support</b>
+          </div>
+          <div class="cookie-info-line">
+            <span>Position</span>
+            <b id="cookiePositionLabel">Rear</b>
+          </div>
+          <div class="cookie-info-line">
+            <span>Power</span>
+            <b id="cookiePowerLabel">8,100</b>
+          </div>
+          <div class="cookie-info-actions">
+            <button id="cookieLevelButton" type="button">Level Up</button>
+            <button id="cookieTeamButton" type="button">Add to Team</button>
+          </div>
+        </aside>
+      </section>
+
+      <!-- =====================================================
+           ADVENTURE HUB
+      ====================================================== -->
+      <section id="adventureScreen" class="screen adventure-screen" aria-label="Adventure">
+        <div class="adventure-background" aria-hidden="true">
+          <div class="adventure-sky"></div>
+          <div class="adventure-mountain adventure-mountain-one"></div>
+          <div class="adventure-mountain adventure-mountain-two"></div>
+          <div class="adventure-mist"></div>
         </div>
 
-      </div>
+        <header class="scene-header">
+          <button class="scene-back-button" data-screen="kingdomScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>WORLD EXPLORATION</small>
+            <h1>Adventure</h1>
+          </div>
+          <div class="scene-resource-box">
+            <span>Coins</span>
+            <strong id="adventureCoinText">1,248,350</strong>
+          </div>
+        </header>
 
-      <div class="income-card">
-        <h3>💰 Kingdom Income</h3>
-        <p>
-          Your kingdom earns
-          <strong>$<span id="income">10</span></strong>
-          every few seconds.
-        </p>
+        <div class="adventure-mode-grid">
+          <button class="adventure-mode-card primary-mode" data-world="frostpeak" type="button">
+            <span class="mode-eyebrow">WORLD 1</span>
+            <strong>Frostpeak Mountains</strong>
+            <small>Bravery in Every Step</small>
+            <div class="mode-progress"><i id="frostpeakProgress"></i></div>
+            <b id="frostpeakProgressText">0 / 30</b>
+          </button>
 
-        <button onclick="collectIncome()">
-          Collect Income
-        </button>
-      </div>
+          <button class="adventure-mode-card arena-mode" type="button" data-action="arena">
+            <span class="mode-eyebrow">PVP</span>
+            <strong>Fortune Arena</strong>
+            <small>Rise through the ranks</small>
+            <b>Coming Soon</b>
+          </button>
 
-    </section>
+          <button class="adventure-mode-card dominion-mode" type="button" data-action="dominion">
+            <span class="mode-eyebrow">FORBIDDEN REGION</span>
+            <strong>Sealed Dominion</strong>
+            <small>Five prisons. Five Beasts.</small>
+            <b>Locked</b>
+          </button>
 
+          <button class="adventure-mode-card trials-mode" type="button" data-action="trials">
+            <span class="mode-eyebrow">COOKIE CHALLENGE</span>
+            <strong>Cookie Trials</strong>
+            <small>Master every hero</small>
+            <b>Coming Soon</b>
+          </button>
 
+          <button class="adventure-mode-card wonder-mode" type="button" data-action="wonderlands">
+            <span class="mode-eyebrow">MAGICAL WORLD</span>
+            <strong>Wonderlands</strong>
+            <small>Stories beyond Prospera</small>
+            <b>Coming Soon</b>
+          </button>
+        </div>
+      </section>
 
-    <!-- BATTLE -->
-    <section id="battle" class="screen">
+      <!-- =====================================================
+           FROSTPEAK STAGE MAP
+      ====================================================== -->
+      <section id="worldScreen" class="screen world-screen" aria-label="Frostpeak Mountains">
+        <div class="world-background" aria-hidden="true">
+          <div class="world-sky"></div>
+          <div class="world-mountain world-mountain-a"></div>
+          <div class="world-mountain world-mountain-b"></div>
+          <div class="world-mountain world-mountain-c"></div>
+          <div class="world-snow-layer"></div>
+          <div class="world-road world-road-a"></div>
+          <div class="world-road world-road-b"></div>
+          <div class="world-road world-road-c"></div>
+        </div>
 
-      <h2>⚔️ Adventure</h2>
+        <header class="scene-header world-header">
+          <button class="scene-back-button" data-screen="adventureScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>WORLD 1</small>
+            <h1>Frostpeak Mountains</h1>
+          </div>
+          <div class="scene-resource-box">
+            <span>Stars</span>
+            <strong id="worldStarText">0 / 90</strong>
+          </div>
+        </header>
 
-      <div class="stage-card">
+        <div id="stageRoute" class="stage-route" aria-label="Stage route"></div>
+      </section>
 
-        <h3>
-          Stage <span id="stage">1</span>
-        </h3>
+      <!-- =====================================================
+           STAGE DETAILS
+      ====================================================== -->
+      <section id="stageScreen" class="screen stage-screen" aria-label="Stage details">
+        <div class="stage-background" aria-hidden="true"></div>
 
-        <p id="enemyName">
-          Impulse Shopping Goblin
-        </p>
+        <header class="scene-header stage-header">
+          <button class="scene-back-button" data-screen="worldScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>FROSTPEAK MOUNTAINS</small>
+            <h1 id="stageTitle">Stage 1-1</h1>
+          </div>
+        </header>
 
-        <div class="battle-area">
+        <div class="stage-detail-panel">
+          <div class="stage-story-column">
+            <span class="stage-label">MISSION</span>
+            <h2 id="stageSubtitle">Footprints in the Snow</h2>
+            <p id="stageDescription">Protect Prospera's supplies and clear the frozen mountain trail.</p>
 
-          <div class="hero-fighter">
-            💵
-            <span>Dollar Cookie</span>
+            <div class="stage-stat-grid">
+              <div class="stage-stat-card">
+                <span>Recommended Power</span>
+                <strong id="stagePower">4,420</strong>
+              </div>
+              <div class="stage-stat-card">
+                <span>Waves</span>
+                <strong id="stageWaveCount">3</strong>
+              </div>
+              <div class="stage-stat-card">
+                <span>First Clear</span>
+                <strong>500 Coins</strong>
+              </div>
+            </div>
           </div>
 
-          <div class="vs">VS</div>
+          <div class="stage-team-column">
+            <h3>Current Team</h3>
+            <div id="stageTeamPreview" class="stage-team-preview"></div>
+            <div class="stage-action-row">
+              <button id="editTeamButton" class="secondary-game-button" type="button">Edit Team</button>
+              <button id="startBattleButton" class="primary-game-button" type="button">Battle</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div class="enemy-fighter" id="enemySprite">
-            👹
-            <span id="enemyLabel">
-              Shopping Goblin
-            </span>
+
+
+      <!-- =====================================================
+           TEAM EDITOR
+      ====================================================== -->
+      <section id="teamScreen" class="screen team-screen" aria-label="Edit team">
+        <div class="team-screen-background" aria-hidden="true">
+          <div class="team-screen-glow glow-a"></div>
+          <div class="team-screen-glow glow-b"></div>
+          <div class="team-screen-floor"></div>
+        </div>
+
+        <header class="scene-header team-header">
+          <button class="scene-back-button" data-screen="stageScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>BATTLE FORMATION</small>
+            <h1>Edit Team</h1>
+          </div>
+          <div class="scene-resource-box">
+            <span>Team Power</span>
+            <strong id="teamPowerText">0</strong>
+          </div>
+        </header>
+
+        <div class="team-editor-layout">
+          <section class="formation-panel">
+            <div class="formation-heading">
+              <div>
+                <small>CURRENT FORMATION</small>
+                <h2>Prospera Team</h2>
+              </div>
+              <span id="teamCountText">5 / 5</span>
+            </div>
+
+            <div class="formation-field">
+              <div class="formation-lane lane-front"><span>FRONT</span></div>
+              <div class="formation-lane lane-middle"><span>MIDDLE</span></div>
+              <div class="formation-lane lane-rear"><span>REAR</span></div>
+              <div id="teamSlots" class="team-slots"></div>
+            </div>
+
+            <div class="team-editor-actions">
+              <button id="autoTeamButton" class="secondary-game-button" type="button">Auto Team</button>
+              <button id="clearTeamButton" class="secondary-game-button" type="button">Clear</button>
+              <button id="confirmTeamButton" class="primary-game-button" type="button">Confirm Team</button>
+            </div>
+          </section>
+
+          <aside class="team-roster-panel">
+            <div class="team-roster-toolbar">
+              <div>
+                <small>OWNED COOKIES</small>
+                <h3>Choose your heroes</h3>
+              </div>
+              <input id="teamSearchInput" type="search" placeholder="Search Cookies" />
+            </div>
+            <div id="teamRoster" class="team-roster"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           BUILD STUDIO
+      ====================================================== -->
+      <section id="buildScreen" class="screen build-screen" aria-label="Build Prospera">
+        <div class="build-screen-background" aria-hidden="true"></div>
+
+        <header class="scene-header build-header-screen">
+          <button class="scene-back-button" data-screen="kingdomScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>PROSPERA WORKSHOP</small>
+            <h1>Build & Decorate</h1>
+          </div>
+          <div class="build-resource-row">
+            <span><b id="buildCoinsText">0</b> Coins</span>
+            <span><b id="buildWoodText">0</b> Wood</span>
+            <span><b id="buildStoneText">0</b> Stone</span>
+          </div>
+        </header>
+
+        <div class="build-studio-layout">
+          <aside class="build-catalog-panel">
+            <div class="build-category-tabs" id="buildCategoryTabs">
+              <button class="active" data-category="buildings" type="button">Buildings</button>
+              <button data-category="nature" type="button">Nature</button>
+              <button data-category="decor" type="button">Decor</button>
+              <button data-category="paths" type="button">Paths</button>
+              <button data-category="water" type="button">Water</button>
+            </div>
+            <div id="buildCatalog" class="build-catalog"></div>
+          </aside>
+
+          <section class="build-preview-panel">
+            <div class="build-preview-toolbar">
+              <div>
+                <small>PLACEMENT PREVIEW</small>
+                <h2 id="buildPreviewTitle">Choose an item</h2>
+              </div>
+              <span id="buildPreviewStatus">Ready</span>
+            </div>
+
+            <div id="buildPlacementField" class="build-placement-field">
+              <div class="placement-grid-lines"></div>
+              <div class="placement-river"></div>
+              <div class="placement-castle"></div>
+              <div id="placedObjects" class="placed-objects"></div>
+              <div id="placementGhost" class="placement-ghost" hidden>
+                <div class="placement-object-art"></div>
+                <span class="placement-validity">Valid placement</span>
+              </div>
+            </div>
+
+            <div class="build-preview-actions">
+              <button id="rotatePlacementButton" class="secondary-game-button" type="button">Rotate</button>
+              <button id="cancelPlacementButton" class="secondary-game-button" type="button">Cancel</button>
+              <button id="confirmPlacementButton" class="primary-game-button" type="button">Place</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VICTORY RESULTS
+      ====================================================== -->
+      <section id="victoryScreen" class="screen victory-screen" aria-label="Victory results">
+        <div class="victory-background" aria-hidden="true">
+          <div class="victory-rays"></div>
+          <div class="victory-confetti" id="victoryConfetti"></div>
+        </div>
+
+        <header class="victory-title-block">
+          <small>STAGE CLEARED</small>
+          <h1>VICTORY</h1>
+          <p id="victoryStageText">Frostpeak Mountains · Stage 1-1</p>
+        </header>
+
+        <div class="victory-layout">
+          <section class="victory-team-panel">
+            <h2>Your Team</h2>
+            <div id="victoryTeam" class="victory-team"></div>
+          </section>
+
+          <section class="victory-reward-panel">
+            <small>REWARDS</small>
+            <h2>A brighter path for Prospera</h2>
+            <div class="reward-grid">
+              <div class="reward-card"><span class="reward-icon coin-reward"></span><b>500</b><small>Coins</small></div>
+              <div class="reward-card"><span class="reward-icon wood-reward"></span><b>8</b><small>Wood</small></div>
+              <div class="reward-card"><span class="reward-icon candy-reward"></span><b>3</b><small>EXP Candy</small></div>
+              <div class="reward-card"><span class="reward-icon star-reward"></span><b>3</b><small>Stars</small></div>
+            </div>
+
+            <div class="victory-actions">
+              <button id="victoryKingdomButton" class="secondary-game-button" type="button">Kingdom</button>
+              <button id="victoryReplayButton" class="secondary-game-button" type="button">Replay</button>
+              <button id="victoryMapButton" class="secondary-game-button" type="button">Map</button>
+              <button id="victoryNextButton" class="primary-game-button" type="button">Next Stage</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SUMMON
+      ====================================================== -->
+      <section id="summonScreen" class="screen summon-screen" aria-label="Tree of Fortune Summon">
+        <div class="summon-background" aria-hidden="true"></div>
+        <div class="summon-stars" aria-hidden="true"></div>
+
+        <header class="scene-header summon-header">
+          <button class="scene-back-button" data-screen="kingdomScreen" type="button">Back</button>
+          <div class="scene-title-block">
+            <small>TREE OF FORTUNE</small>
+            <h1>Summon</h1>
+          </div>
+          <div class="scene-resource-box">
+            <span>Tickets</span>
+            <strong id="ticketText">25</strong>
+          </div>
+        </header>
+
+        <div class="summon-layout">
+          <div class="fortune-tree-stage">
+            <div class="fortune-aura fortune-aura-one"></div>
+            <div class="fortune-aura fortune-aura-two"></div>
+            <div class="fortune-tree">
+              <div class="tree-trunk"></div>
+              <div class="tree-crown tree-crown-left"></div>
+              <div class="tree-crown tree-crown-center"></div>
+              <div class="tree-crown tree-crown-right"></div>
+              <span class="fortune-gem fortune-gem-a"></span>
+              <span class="fortune-gem fortune-gem-b"></span>
+              <span class="fortune-gem fortune-gem-c"></span>
+            </div>
+            <div class="summon-message">
+              <span>Make a wish beneath the Tree of Fortune.</span>
+              <strong>Every new friend makes Prospera brighter.</strong>
+            </div>
           </div>
 
+          <aside id="summonResult" class="summon-result-card">
+            <span class="summon-result-placeholder">Your summoned Cookie will appear here.</span>
+          </aside>
         </div>
 
-        <div class="health-bar">
-          <div id="enemyHealth"></div>
+        <div class="summon-button-row">
+          <button id="summonOneButton" class="secondary-game-button summon-button" type="button">
+            Summon ×1
+            <small>1 Ticket</small>
+          </button>
+          <button id="summonTenButton" class="primary-game-button summon-button" type="button">
+            Summon ×10
+            <small>10 Tickets</small>
+          </button>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           BATTLE
+      ====================================================== -->
+      <section id="battleScreen" class="battle-screen" hidden aria-label="Battle">
+        <div class="battle-sky"></div>
+        <div class="battle-cloud battle-cloud-a"></div>
+        <div class="battle-cloud battle-cloud-b"></div>
+        <div class="battle-mountains battle-mountains-far"></div>
+        <div class="battle-mountains battle-mountains-near"></div>
+        <div class="battle-ground"></div>
+        <div class="battle-path"></div>
+        <div id="battleWeatherLayer" class="battle-weather-layer"></div>
+
+        <header class="battle-hud">
+          <button id="exitBattleButton" class="battle-hud-button" type="button">Back</button>
+
+          <div class="battle-stage-info">
+            <small id="battleStageText">STAGE 1-1</small>
+            <strong id="battleWaveText">WAVE 1 / 3</strong>
+          </div>
+
+          <div class="battle-hud-controls">
+            <button id="autoBattleButton" class="battle-hud-button active" type="button">AUTO</button>
+            <button id="battleSpeedButton" class="battle-hud-button" type="button">×1</button>
+            <button id="pauseBattleButton" class="battle-hud-button" type="button">PAUSE</button>
+          </div>
+        </header>
+
+        <div id="bossHealthPanel" class="boss-health-panel" hidden>
+          <span id="bossTitle">Frost Guardian</span>
+          <div class="boss-health-track">
+            <i id="bossHealthFill"></i>
+          </div>
         </div>
 
-        <p id="battleMessage">
-          Ready for battle!
-        </p>
-
-        <button class="battle-btn" onclick="fight()">
-          ⚔️ FIGHT
-        </button>
-
-      </div>
-
-      <div class="reward-preview">
-        <h3>Possible Rewards</h3>
-
-        <span>💰 Coins</span>
-        <span>⭐ XP</span>
-        <span>🎁 Chests</span>
-        <span>🧩 Hero Shards</span>
-
-      </div>
-
-    </section>
-
-
-
-    <!-- HEROES -->
-    <section id="heroes" class="screen">
-
-      <h2>🍪 Cookie Collection</h2>
-
-      <div class="filters">
-        <button onclick="filterHeroes('ALL')">All</button>
-        <button onclick="filterHeroes('COMMON')">Common</button>
-        <button onclick="filterHeroes('EPIC')">Epic</button>
-        <button onclick="filterHeroes('LEGENDARY')">Legendary</button>
-        <button onclick="filterHeroes('ANCIENT')">Ancient</button>
-        <button onclick="filterHeroes('BEAST')">Beast</button>
-      </div>
-
-      <div id="heroGrid" class="hero-grid"></div>
-
-    </section>
-
-
-
-    <!-- SKILL TREE -->
-    <section id="skills" class="screen">
-
-      <h2>🌳 Skill Tree</h2>
-
-      <div class="skill-info">
-        Skill Points:
-        <strong id="skillPoints">5</strong>
-      </div>
-
-      <div class="skill-tree">
-
-        <div
-          class="skill-node power"
-          onclick="upgradeSkill('power')"
-        >
-          ⚔️
-          <strong>Power</strong>
-          <small>Lv. <span id="powerSkill">0</span></small>
-        </div>
-
-
-        <div
-          class="skill-node luck"
-          onclick="upgradeSkill('luck')"
-        >
-          🍀
-          <strong>Luck</strong>
-          <small>Lv. <span id="luckSkill">0</span></small>
-        </div>
-
-
-        <div
-          class="skill-node wealth"
-          onclick="upgradeSkill('wealth')"
-        >
-          💰
-          <strong>Wealth</strong>
-          <small>Lv. <span id="wealthSkill">0</span></small>
-        </div>
-
-
-        <div
-          class="skill-node speed"
-          onclick="upgradeSkill('speed')"
-        >
-          ⚡
-          <strong>Speed</strong>
-          <small>Lv. <span id="speedSkill">0</span></small>
-        </div>
-
-
-        <div
-          class="skill-node defence"
-          onclick="upgradeSkill('defence')"
-        >
-          🛡️
-          <strong>Defence</strong>
-          <small>Lv. <span id="defenceSkill">0</span></small>
-        </div>
-
-
-        <div
-          class="skill-node wisdom"
-          onclick="upgradeSkill('wisdom')"
-        >
-          🧠
-          <strong>Wisdom</strong>
-          <small>Lv. <span id="wisdomSkill">0</span></small>
-        </div>
-
-      </div>
-
-      <div class="skill-description">
-        <h3>Build your own play style</h3>
-
-        <p>
-          ⚔️ Power increases battle damage.
-        </p>
-
-        <p>
-          🍀 Luck increases rare rewards.
-        </p>
-
-        <p>
-          💰 Wealth increases kingdom income.
-        </p>
-
-        <p>
-          ⚡ Speed increases attack efficiency.
-        </p>
-
-        <p>
-          🛡️ Defence reduces battle damage.
-        </p>
-
-        <p>
-          🧠 Wisdom gives bonus XP.
-        </p>
-      </div>
-
-    </section>
-
-
-
-    <!-- STORY -->
-    <section id="story" class="screen">
-
-      <h2>📖 Story</h2>
-
-      <div class="story-box">
-
-        <h3>
-          Chapter 1
-        </h3>
-
-        <h2>
-          The Shattered Kingdom
-        </h2>
-
-        <p>
-          Long ago, Prospera was protected by the
-          legendary Tree of Fortune.
-        </p>
-
-        <p>
-          But one day, the tree shattered.
-        </p>
-
-        <p>
-          Its seven Golden Seeds disappeared across
-          the world.
-        </p>
-
-        <p>
-          Without them, Debt, Greed, Deception and
-          Ruin spread across the kingdom.
-        </p>
-
-        <p>
-          Now you must rebuild Prospera, gather the
-          Cookies and recover the Golden Seeds.
-        </p>
-
-        <blockquote>
-          “True wealth is not how much you own.
-          It is what you can build with it.”
-        </blockquote>
-
-      </div>
-
-      <div class="chapter-list">
-
-        <div class="chapter unlocked">
-          🌱 Chapter 1
-          <span>Empty Village</span>
-        </div>
-
-        <div class="chapter">
-          🏜️ Chapter 2
-          <span>Debt Desert 🔒</span>
-        </div>
-
-        <div class="chapter">
-          🌲 Chapter 3
-          <span>Budget Forest 🔒</span>
-        </div>
-
-        <div class="chapter">
-          🌊 Chapter 4
-          <span>Risky Seas 🔒</span>
-        </div>
-
-        <div class="chapter">
-          📈 Chapter 5
-          <span>Investment City 🔒</span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-
-  <!-- REWARD POPUP -->
-  <div id="rewardPopup" class="popup hidden">
-
-    <div class="popup-card">
-
-      <h1>🎁 REWARD!</h1>
-
-      <div id="rewardText"></div>
-
-      <button onclick="closeReward()">
-        COLLECT
-      </button>
-
-    </div>
-
+        <div id="waveAnnouncement" class="wave-announcement">WAVE 1</div>
+        <div id="battleMessage" class="battle-message"></div>
+
+        <div id="allyField" class="fighter-field ally-field"></div>
+        <div id="enemyField" class="fighter-field enemy-field"></div>
+        <div id="projectileLayer" class="projectile-layer"></div>
+        <div id="effectLayer" class="effect-layer"></div>
+        <div id="floatLayer" class="float-layer"></div>
+
+        <div id="skillBar" class="skill-bar"></div>
+      </section>
+
+      <!-- =====================================================
+           EXPANDED SYSTEM TEMPLATE LIBRARY
+           These templates are hidden until their systems are activated.
+      ====================================================== -->
+      <section id="expandedSystemsLibrary" class="expanded-systems-library" hidden aria-hidden="true">
+        <header class="expanded-library-header">
+          <small>MONEY KINGDOM SYSTEM LIBRARY</small>
+          <h2>Future Kingdom Interfaces</h2>
+          <p>Reusable markup for quests, buildings, achievements, worlds, memories and production systems.</p>
+        </header>
+        <article class="system-template quest-template" data-template="quest-01">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 01</small>
+            <strong>Prospera Goal 01</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:13%"></i></div>
+            <b>3 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-02">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 02</small>
+            <strong>Prospera Goal 02</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:26%"></i></div>
+            <b>6 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-03">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 03</small>
+            <strong>Prospera Goal 03</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:39%"></i></div>
+            <b>9 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-04">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 04</small>
+            <strong>Prospera Goal 04</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:52%"></i></div>
+            <b>2 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-05">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 05</small>
+            <strong>Prospera Goal 05</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:65%"></i></div>
+            <b>5 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-06">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 06</small>
+            <strong>Prospera Goal 06</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:78%"></i></div>
+            <b>8 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-07">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 07</small>
+            <strong>Prospera Goal 07</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:91%"></i></div>
+            <b>1 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-08">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 08</small>
+            <strong>Prospera Goal 08</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:3%"></i></div>
+            <b>4 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-09">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 09</small>
+            <strong>Prospera Goal 09</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:16%"></i></div>
+            <b>7 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-10">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 10</small>
+            <strong>Prospera Goal 10</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:29%"></i></div>
+            <b>0 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-11">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 11</small>
+            <strong>Prospera Goal 11</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:42%"></i></div>
+            <b>3 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-12">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 12</small>
+            <strong>Prospera Goal 12</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:55%"></i></div>
+            <b>6 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-13">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 13</small>
+            <strong>Prospera Goal 13</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:68%"></i></div>
+            <b>9 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-14">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 14</small>
+            <strong>Prospera Goal 14</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:81%"></i></div>
+            <b>2 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-15">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 15</small>
+            <strong>Prospera Goal 15</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:94%"></i></div>
+            <b>5 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-16">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 16</small>
+            <strong>Prospera Goal 16</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:6%"></i></div>
+            <b>8 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-17">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 17</small>
+            <strong>Prospera Goal 17</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:19%"></i></div>
+            <b>1 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-18">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 18</small>
+            <strong>Prospera Goal 18</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:32%"></i></div>
+            <b>4 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-19">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 19</small>
+            <strong>Prospera Goal 19</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:45%"></i></div>
+            <b>7 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template quest-template" data-template="quest-20">
+          <div class="system-template-icon quest-template-icon"></div>
+          <div class="system-template-copy">
+            <small>QUEST 20</small>
+            <strong>Prospera Goal 20</strong>
+            <p>Complete this kingdom objective to earn coins, materials and progress.</p>
+          </div>
+          <div class="system-template-progress">
+            <span>Progress</span>
+            <div class="system-template-track"><i style="--progress:58%"></i></div>
+            <b>0 / 10</b>
+          </div>
+          <button type="button" disabled>Claim</button>
+        </article>
+        <article class="system-template building-template" data-template="building-01">
+          <div class="building-template-art building-template-art-01"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 01</small>
+            <strong>Cookie House</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>1,750</b>
+            <span>Castle Lv. 1</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-02">
+          <div class="building-template-art building-template-art-02"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 02</small>
+            <strong>Fortune Farm</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>2,500</b>
+            <span>Castle Lv. 1</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-03">
+          <div class="building-template-art building-template-art-03"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 03</small>
+            <strong>Lumber Mill</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>3,250</b>
+            <span>Castle Lv. 2</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-04">
+          <div class="building-template-art building-template-art-04"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 04</small>
+            <strong>Stone Quarry</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>4,000</b>
+            <span>Castle Lv. 2</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-05">
+          <div class="building-template-art building-template-art-05"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 05</small>
+            <strong>Golden Bakery</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>4,750</b>
+            <span>Castle Lv. 2</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-06">
+          <div class="building-template-art building-template-art-06"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 06</small>
+            <strong>Golden Bank</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>5,500</b>
+            <span>Castle Lv. 3</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-07">
+          <div class="building-template-art building-template-art-07"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 07</small>
+            <strong>Wisdom Academy</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>6,250</b>
+            <span>Castle Lv. 3</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-08">
+          <div class="building-template-art building-template-art-08"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 08</small>
+            <strong>Market Hall</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>7,000</b>
+            <span>Castle Lv. 3</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-09">
+          <div class="building-template-art building-template-art-09"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 09</small>
+            <strong>Concert Hall</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>7,750</b>
+            <span>Castle Lv. 4</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-10">
+          <div class="building-template-art building-template-art-10"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 10</small>
+            <strong>Security Bureau</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>8,500</b>
+            <span>Castle Lv. 4</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-11">
+          <div class="building-template-art building-template-art-11"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 11</small>
+            <strong>Community Hall</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>9,250</b>
+            <span>Castle Lv. 4</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-12">
+          <div class="building-template-art building-template-art-12"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 12</small>
+            <strong>Investment Hall</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>10,000</b>
+            <span>Castle Lv. 5</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-13">
+          <div class="building-template-art building-template-art-13"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 13</small>
+            <strong>Crystal Fountain</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>10,750</b>
+            <span>Castle Lv. 5</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-14">
+          <div class="building-template-art building-template-art-14"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 14</small>
+            <strong>Harbor Dock</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>11,500</b>
+            <span>Castle Lv. 5</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-15">
+          <div class="building-template-art building-template-art-15"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 15</small>
+            <strong>Windmill Workshop</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>12,250</b>
+            <span>Castle Lv. 6</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template building-template" data-template="building-16">
+          <div class="building-template-art building-template-art-16"></div>
+          <div class="system-template-copy">
+            <small>BUILDING 16</small>
+            <strong>Garden Pavilion</strong>
+            <p>Place, rotate and upgrade this structure inside Prospera.</p>
+          </div>
+          <div class="building-template-cost">
+            <span>Coins</span>
+            <b>13,000</b>
+            <span>Castle Lv. 6</span>
+          </div>
+          <button type="button" disabled>Place</button>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-01">
+          <span class="achievement-medal achievement-medal-01"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 01</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>30 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-02">
+          <span class="achievement-medal achievement-medal-02"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 02</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>35 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-03">
+          <span class="achievement-medal achievement-medal-03"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 03</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>40 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-04">
+          <span class="achievement-medal achievement-medal-04"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 04</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>45 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-05">
+          <span class="achievement-medal achievement-medal-05"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 05</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>50 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-06">
+          <span class="achievement-medal achievement-medal-06"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 06</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>55 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-07">
+          <span class="achievement-medal achievement-medal-07"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 07</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>60 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-08">
+          <span class="achievement-medal achievement-medal-08"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 08</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>65 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-09">
+          <span class="achievement-medal achievement-medal-09"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 09</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>70 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-10">
+          <span class="achievement-medal achievement-medal-10"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 10</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>75 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-11">
+          <span class="achievement-medal achievement-medal-11"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 11</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>80 Gems</b>
+          </div>
+        </article>
+        <article class="system-template achievement-template" data-template="achievement-12">
+          <span class="achievement-medal achievement-medal-12"></span>
+          <div class="system-template-copy">
+            <small>ACHIEVEMENT</small>
+            <strong>Kingdom Milestone 12</strong>
+            <p>Track long-term progress across building, exploration and Cookie friendship.</p>
+          </div>
+          <div class="achievement-reward">
+            <span>Reward</span>
+            <b>85 Gems</b>
+          </div>
+        </article>
+        <article class="system-template world-template" data-template="world-01">
+          <div class="world-template-scene world-template-scene-01"></div>
+          <div class="system-template-copy">
+            <small>WORLD 01</small>
+            <strong>Empty Village</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-02">
+          <div class="world-template-scene world-template-scene-02"></div>
+          <div class="system-template-copy">
+            <small>WORLD 02</small>
+            <strong>Debt Desert</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-03">
+          <div class="world-template-scene world-template-scene-03"></div>
+          <div class="system-template-copy">
+            <small>WORLD 03</small>
+            <strong>Budget Forest</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-04">
+          <div class="world-template-scene world-template-scene-04"></div>
+          <div class="system-template-copy">
+            <small>WORLD 04</small>
+            <strong>Risky Seas</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-05">
+          <div class="world-template-scene world-template-scene-05"></div>
+          <div class="system-template-copy">
+            <small>WORLD 05</small>
+            <strong>Investment City</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-06">
+          <div class="world-template-scene world-template-scene-06"></div>
+          <div class="system-template-copy">
+            <small>WORLD 06</small>
+            <strong>Inflation Mountain</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-07">
+          <div class="world-template-scene world-template-scene-07"></div>
+          <div class="system-template-copy">
+            <small>WORLD 07</small>
+            <strong>Forgotten Kingdom</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-08">
+          <div class="world-template-scene world-template-scene-08"></div>
+          <div class="system-template-copy">
+            <small>WORLD 08</small>
+            <strong>Republic of Cookies</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-09">
+          <div class="world-template-scene world-template-scene-09"></div>
+          <div class="system-template-copy">
+            <small>WORLD 09</small>
+            <strong>Sealed Dominion</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template world-template" data-template="world-10">
+          <div class="world-template-scene world-template-scene-10"></div>
+          <div class="system-template-copy">
+            <small>WORLD 10</small>
+            <strong>Wonderlands</strong>
+            <p>Thirty original stages with battles, memories, treasure and financial lessons.</p>
+          </div>
+          <div class="world-template-stars">
+            <span>Stars</span>
+            <b>0 / 90</b>
+          </div>
+          <button type="button" disabled>Explore</button>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-01">
+          <span class="recipe-icon recipe-icon-01"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 01</small>
+            <strong>Wheat</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>3 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-02">
+          <span class="recipe-icon recipe-icon-02"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 02</small>
+            <strong>Flour</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>4 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-03">
+          <span class="recipe-icon recipe-icon-03"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 03</small>
+            <strong>Bread</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>5 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-04">
+          <span class="recipe-icon recipe-icon-04"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 04</small>
+            <strong>Timber</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>6 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-05">
+          <span class="recipe-icon recipe-icon-05"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 05</small>
+            <strong>Cut Stone</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>7 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-06">
+          <span class="recipe-icon recipe-icon-06"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 06</small>
+            <strong>Coin Pouch</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>8 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-07">
+          <span class="recipe-icon recipe-icon-07"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 07</small>
+            <strong>Market Basket</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>9 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-08">
+          <span class="recipe-icon recipe-icon-08"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 08</small>
+            <strong>School Book</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>10 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-09">
+          <span class="recipe-icon recipe-icon-09"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 09</small>
+            <strong>Repair Kit</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>11 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-10">
+          <span class="recipe-icon recipe-icon-10"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 10</small>
+            <strong>Festival Lantern</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>12 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-11">
+          <span class="recipe-icon recipe-icon-11"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 11</small>
+            <strong>Savings Box</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>13 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-12">
+          <span class="recipe-icon recipe-icon-12"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 12</small>
+            <strong>Investment Token</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>14 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-13">
+          <span class="recipe-icon recipe-icon-13"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 13</small>
+            <strong>Music Sheet</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>15 min</b>
+          </div>
+        </article>
+        <article class="system-template recipe-template" data-template="recipe-14">
+          <span class="recipe-icon recipe-icon-14"></span>
+          <div class="system-template-copy">
+            <small>RECIPE 14</small>
+            <strong>Golden Seed Dust</strong>
+            <p>Production recipe used by Prospera buildings and kingdom requests.</p>
+          </div>
+          <div class="recipe-time">
+            <span>Time</span>
+            <b>16 min</b>
+          </div>
+        </article>
+      </section>
+
+      <!-- =====================================================
+           MODAL / SIDE PANEL
+      ====================================================== -->
+      <div id="panelShade" class="panel-shade" hidden></div>
+
+      <aside id="sidePanel" class="side-panel" hidden aria-live="polite">
+        <div class="panel-gold-line"></div>
+        <button id="closePanelButton" class="close-panel-button" type="button" aria-label="Close panel">×</button>
+        <small id="panelKicker">PROSPERA</small>
+        <h2 id="panelTitle">Panel</h2>
+        <div id="panelBody"></div>
+      </aside>
+
+      <!-- =====================================================
+           TOAST
+      ====================================================== -->
+      <div id="toast" class="toast" hidden aria-live="polite"></div>
+    </main>
   </div>
 
-
-
-  <!-- BOTTOM NAV -->
-  <nav>
-
-    <button onclick="showScreen('kingdom')">
-      🏰
-      <span>Kingdom</span>
-    </button>
-
-    <button onclick="showScreen('battle')">
-      ⚔️
-      <span>Battle</span>
-    </button>
-
-    <button onclick="showScreen('heroes')">
-      🍪
-      <span>Cookies</span>
-    </button>
-
-    <button onclick="showScreen('skills')">
-      🌳
-      <span>Skills</span>
-    </button>
-
-    <button onclick="showScreen('story')">
-      📖
-      <span>Story</span>
-    </button>
-
-  </nav>
-
-  <script src="script.js"></script>
-
+  <script src="./script.js?v=18"></script>
 </body>
 </html>
